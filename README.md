@@ -60,6 +60,8 @@ docs/
   pdf/
     estilo.css        hoja del PDF (paleta y tipografia del tablero)
     portada.lua       filtro de pandoc: portada y muestras de color
+    portada.yaml      curso, integrantes y fecha de la portada
+    logo-uvg.png      logo de la portada
 flake.nix             entorno reproducible y comandos `nix run`
 ```
 
@@ -77,6 +79,7 @@ Sin Nix, con `pandoc` y `weasyprint` instalados:
 
 ```bash
 pandoc docs/documento_diseno.md -s --metadata lang=es \
+  --metadata-file docs/pdf/portada.yaml --embed-resources \
   --lua-filter docs/pdf/portada.lua --css docs/pdf/estilo.css \
   --pdf-engine weasyprint -o docs/documento_diseno.pdf
 ```

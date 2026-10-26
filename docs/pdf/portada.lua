@@ -1,12 +1,16 @@
 -- Filtro de pandoc para los PDF de docs/.
 --
--- 1. Convierte el encabezado del documento (# titulo, ## subtitulo y el
---    parrafo "**Laboratorio ...** / **Fecha:** ...") en la portada con el
---    degradado del tablero.
+-- 1. Sustituye el encabezado del documento (# titulo, ## subtitulo y el
+--    parrafo "**Laboratorio ...** / **Fecha:** ...") por la portada de la
+--    UVG, con los datos de docs/pdf/portada.yaml.
 -- 2. Antepone un cuadrito del color a cada codigo hexadecimal (`#4361EE`).
 
 local function escapar(s)
   return (s:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"))
+end
+
+local function texto(valor)
+  return valor and escapar(pandoc.utils.stringify(valor)) or ""
 end
 
 function Code(el)
@@ -27,7 +31,7 @@ function Pandoc(doc)
   end
 
   local titulo = pandoc.utils.stringify(bloques[1])
-  local subtitulo, marca = "", ""
+  local subtitulo = ""
   local i = 2
 
   if bloques[i] and bloques[i].t == "Header" and bloques[i].level == 2 then
@@ -35,19 +39,38 @@ function Pandoc(doc)
     i = i + 1
   end
 
-  if bloques[i] and bloques[i].t == "Para" then
-    local texto = pandoc.utils.stringify(bloques[i])
-    if texto:match("^Laboratorio") then
-      local lab, fecha = texto:match("^(.-)%s*Fecha:%s*(.*)$")
-      marca = lab and (lab .. " · " .. fecha) or texto
-      i = i + 1
-    end
+  -- La linea "Laboratorio ... / Fecha: ..." ya la da la portada.
+  if bloques[i] and bloques[i].t == "Para"
+      and pandoc.utils.stringify(bloques[i]):match("^Laboratorio") then
+    i = i + 1
   end
 
-  local portada = string.format(
-    '<div class="portada"><div class="marca">%s</div>'
-      .. '<h1>%s</h1><div class="sub">%s</div></div>',
-    escapar(marca), escapar(titulo), escapar(subtitulo))
+  local p = doc.meta.portada or {}
+  local documento = escapar(titulo)
+  if subtitulo ~= "" then
+    documento = documento .. ": " .. escapar(subtitulo)
+  end
+
+  local integrantes = {}
+  for _, nombre in ipairs(p.integrantes or {}) do
+    integrantes[#integrantes + 1] = "<div>" .. texto(nombre) .. "</div>"
+  end
+
+  local portada = table.concat({
+    '<section class="portada">',
+    '<div class="encabezado">',
+    '<div class="universidad">' .. texto(p.universidad) .. "</div>",
+    "<div>" .. texto(p.curso) .. "</div>",
+    "</div>",
+    '<img class="logo" src="docs/pdf/logo-uvg.png" alt="Universidad del Valle de Guatemala">',
+    '<div class="laboratorio">' .. texto(p.laboratorio) .. "</div>",
+    '<div class="tema">' .. texto(p.tema) .. "</div>",
+    '<div class="documento">' .. documento .. "</div>",
+    '<div class="integrantes">' .. table.concat(integrantes) .. "</div>",
+    '<div class="lugar">' .. texto(p.lugar) .. "</div>",
+    '<div class="fecha">' .. texto(p.fecha) .. "</div>",
+    "</section>",
+  })
 
   local resto = { pandoc.RawBlock("html", portada) }
   for j = i, #bloques do

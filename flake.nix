@@ -29,8 +29,16 @@
           ps.statsmodels
         ]);
 
-      # Inter para que el PDF tenga la misma tipografia en cualquier maquina.
-      fuentesDe = pkgs: pkgs.makeFontsConf { fontDirectories = [ pkgs.inter ]; };
+      # Inter para el cuerpo del PDF y Liberation (metricas de Times New Roman
+      # y Arial) para la portada, igual en cualquier maquina.
+      fuentesDe =
+        pkgs:
+        pkgs.makeFontsConf {
+          fontDirectories = [
+            pkgs.inter
+            pkgs.liberation_ttf
+          ];
+        };
 
       herramientasDocs = pkgs: [
         pkgs.pandoc
@@ -53,6 +61,8 @@
                 --to html5 \
                 --standalone \
                 --metadata lang=es \
+                --metadata-file docs/pdf/portada.yaml \
+                --embed-resources \
                 --lua-filter docs/pdf/portada.lua \
                 --css docs/pdf/estilo.css \
                 --pdf-engine weasyprint \

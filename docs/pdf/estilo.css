@@ -27,19 +27,28 @@ body {
 }
 
 /* ----------------------------------------------------------- portada -- */
+/* Formato de portada de la UVG: Times para los datos, Arial para el titulo. */
 .portada {
-    background: linear-gradient(135deg, var(--violeta) 0%, var(--azul) 62%,
-                                var(--celeste) 100%);
-    color: #fff;
-    border-radius: 16px;
-    padding: 26px 28px;
-    margin-bottom: 22px;
+    page: portada;
+    page-break-after: always;
+    text-align: center;
+    color: #000;
+    font-family: "Times New Roman", "Liberation Serif", Times, serif;
+    font-size: 12pt;
+    line-height: 1.25;
+    padding-top: 4mm;
 }
-.portada .marca { font-size: 9.5pt; letter-spacing: .08em;
-    text-transform: uppercase; opacity: .85; }
-.portada h1 { font-size: 23pt; margin: 6px 0 2px 0; color: #fff;
-    border: 0; padding: 0; letter-spacing: -.02em; }
-.portada .sub { font-size: 12pt; opacity: .92; }
+@page portada { margin: 20mm 25mm; }
+.portada .universidad { font-weight: bold; }
+.portada .logo { width: 53mm; margin: 14mm 0 18mm 0; }
+.portada .laboratorio, .portada .tema, .portada .documento {
+    font-family: Arial, "Liberation Sans", Helvetica, sans-serif; }
+.portada .laboratorio { font-weight: bold; font-size: 13pt; }
+.portada .tema { color: #666; font-size: 12pt; margin-top: 2px; }
+.portada .documento { color: #666; font-size: 10.5pt; margin-top: 4px; }
+.portada .integrantes { margin-top: 16mm; }
+.portada .lugar { font-weight: bold; margin-top: 8mm; }
+.portada .fecha { font-weight: bold; margin-top: 8mm; }
 
 /* --------------------------------------------------------- jerarquia -- */
 h1 { font-size: 16.5pt; margin: 26px 0 8px 0; color: var(--tinta);
