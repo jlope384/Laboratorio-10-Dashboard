@@ -1,0 +1,13 @@
+# El tablero se probo con estas versiones.
+# plotly se fija por debajo de 7: con 7.x Streamlit deja de entregar el evento
+# de seleccion de las graficas, que es lo que enlaza V3 con V1/V2 y V5 con V6.
+streamlit>=1.40,<2
+plotly>=6.0,<7
+altair>=5.4
+pandas>=2.2
+numpy>=1.26
+scikit-learn>=1.4
+statsmodels>=0.14
+
+# Solo para docs/generar_pdf.py (el tablero no lo usa)
+markdown>=3.5
