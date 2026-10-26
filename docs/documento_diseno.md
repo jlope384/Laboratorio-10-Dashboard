@@ -388,3 +388,7 @@ y vienen con su limitacion declarada:
    mayor efecto positivo sobre la recomendacion** (V20). Recomendacion: priorizar
    inversion ahi. *Limitacion*: el modelo mide asociacion en una encuesta; el
    efecto real debe verificarse con una medicion posterior a la intervencion.
+
+---
+
+**Repositorio:** <https://github.com/jlope384/Laboratorio-10-Dashboard>
