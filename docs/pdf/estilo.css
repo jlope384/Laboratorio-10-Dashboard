@@ -1,0 +1,99 @@
+/* Hoja de estilo de los PDF de docs/ (pandoc + weasyprint).
+   Los colores son los de app/config.py; si cambia la paleta, cambiarlos aqui. */
+
+:root {
+    --azul:    #4361EE;
+    --naranja: #FFA630;
+    --morado:  #A2158D;
+    --violeta: #4D0A99;
+    --celeste: #4CC9F0;
+    --tinta:   #2E3B73;
+    --tinta-2: #5A6798;
+    --linea:   #DFE3F2;
+}
+
+@page {
+    size: Letter;
+    margin: 20mm 17mm 18mm 17mm;
+}
+
+body {
+    font-family: Inter, -apple-system, "SF Pro Text", "Helvetica Neue",
+                 Arial, sans-serif;
+    color: var(--tinta);
+    font-size: 10.2pt;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ----------------------------------------------------------- portada -- */
+.portada {
+    background: linear-gradient(135deg, var(--violeta) 0%, var(--azul) 62%,
+                                var(--celeste) 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 26px 28px;
+    margin-bottom: 22px;
+}
+.portada .marca { font-size: 9.5pt; letter-spacing: .08em;
+    text-transform: uppercase; opacity: .85; }
+.portada h1 { font-size: 23pt; margin: 6px 0 2px 0; color: #fff;
+    border: 0; padding: 0; letter-spacing: -.02em; }
+.portada .sub { font-size: 12pt; opacity: .92; }
+
+/* --------------------------------------------------------- jerarquia -- */
+h1 { font-size: 16.5pt; margin: 26px 0 8px 0; color: var(--tinta);
+     border-bottom: 2px solid var(--azul); padding-bottom: 5px;
+     page-break-after: avoid; letter-spacing: -.015em; }
+h2 { font-size: 13.5pt; margin: 22px 0 7px 0; color: var(--tinta);
+     page-break-after: avoid; letter-spacing: -.012em; }
+h3 { font-size: 11.5pt; margin: 16px 0 5px 0; color: var(--azul);
+     page-break-after: avoid; }
+h1 + h2 { margin-top: 10px; }
+
+p { margin: 7px 0; text-align: justify; }
+ul, ol { margin: 7px 0 7px 18px; padding-left: 8px; }
+li { margin: 3px 0; }
+strong { color: var(--tinta); font-weight: 600; }
+hr { border: 0; border-top: 1px solid var(--linea); margin: 20px 0; }
+
+/* ----------------------------------------------------------- tablas -- */
+table {
+    width: 100%; border-collapse: collapse; margin: 12px 0;
+    font-size: 8.8pt; page-break-inside: auto;
+}
+thead { display: table-header-group; }
+tr { page-break-inside: avoid; }
+th {
+    background: var(--azul); color: #fff; text-align: left;
+    padding: 7px 9px; font-weight: 600; font-size: 8.6pt;
+    border: 1px solid var(--azul);
+}
+td { padding: 6px 9px; border: 1px solid var(--linea); vertical-align: top; }
+tbody tr:nth-child(even) td { background: #F5F6FD; }
+
+/* ------------------------------------------------- codigo y bosquejo -- */
+pre {
+    background: #F5F6FD; border: 1px solid var(--linea); border-radius: 10px;
+    padding: 12px 14px; font-size: 7.4pt; line-height: 1.32;
+    white-space: pre-wrap; page-break-inside: avoid;
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    color: var(--tinta-2);
+}
+code {
+    font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 8.6pt; background: #EDEFFA; color: var(--morado);
+    padding: 1px 4px; border-radius: 4px;
+}
+pre code { background: none; color: inherit; padding: 0; font-size: 7.4pt; }
+
+/* --------------------------------------------------------- citas ------ */
+blockquote {
+    margin: 12px 0; padding: 10px 14px; border-left: 3px solid var(--naranja);
+    background: #FFF6EA; border-radius: 0 10px 10px 0;
+    color: var(--tinta-2); font-size: 9.4pt;
+}
+blockquote p { margin: 0; text-align: left; }
+
+/* ------------------------------------------------- muestras de color -- */
+td code { background: none; color: var(--tinta-2); }

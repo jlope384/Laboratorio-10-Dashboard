@@ -8,6 +8,3 @@ pandas>=2.2
 numpy>=1.26
 scikit-learn>=1.4
 statsmodels>=0.14
-
-# Solo para docs/generar_pdf.py (el tablero no lo usa)
-markdown>=3.5

@@ -9,6 +9,15 @@ proximos 12 meses— sin exigirle al usuario formacion estadistica.
 
 ## Como correrlo
 
+Con Nix (flakes), sin instalar nada mas:
+
+```bash
+nix run                            # levanta el tablero
+nix develop                        # shell con Python, pandoc y weasyprint
+```
+
+Sin Nix:
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate          # macOS / Linux
@@ -48,21 +57,29 @@ docs/
   documento_diseno.md documento de diseno del laboratorio
   documento_diseno.pdf  el mismo, listo para entregar
   codebook.md         descripcion de cada columna
-  generar_pdf.py      convierte cualquier .md de docs/ a PDF
+  pdf/
+    estilo.css        hoja del PDF (paleta y tipografia del tablero)
+    portada.lua       filtro de pandoc: portada y muestras de color
+flake.nix             entorno reproducible y comandos `nix run`
 ```
 
 ## Documento de diseno
 
-`docs/documento_diseno.md` es la fuente; el PDF que se entrega se regenera con:
+`docs/documento_diseno.md` es la fuente; el PDF que se entrega se regenera con
+pandoc (motor weasyprint), usando la misma paleta y tipografia del tablero:
 
 ```bash
-python docs/generar_pdf.py                    # documento_diseno.md -> .pdf
-python docs/generar_pdf.py docs/codebook.md   # cualquier otro .md de docs/
+nix run .#docs                          # documento_diseno.md -> .pdf
+nix run .#docs -- docs/codebook.md      # cualquier otro .md de docs/
 ```
 
-El script convierte el Markdown a HTML con la misma paleta y tipografia del
-tablero y lo imprime con Chrome en modo headless, asi que no hace falta
-instalar pandoc ni LaTeX. Solo necesita `pip install markdown`.
+Sin Nix, con `pandoc` y `weasyprint` instalados:
+
+```bash
+pandoc docs/documento_diseno.md -s --metadata lang=es \
+  --lua-filter docs/pdf/portada.lua --css docs/pdf/estilo.css \
+  --pdf-engine weasyprint -o docs/documento_diseno.pdf
+```
 
 ## Que trae
 
